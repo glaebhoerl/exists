@@ -14,15 +14,20 @@ synopsis:      Existential datatypes holding evidence of constraints
 description:
     This package contains:
     .
-        * Canonical existential datatypes for holding evidence of constraints for types of kind * and * -> *;
-        * Type classes for existential datatypes holding evidence of constraints for types of kind * and * -> *;
-        * Canonical, completely useless existential datatypes holding evidence of no constraint for types of kind * and * -> *;
+        * Canonical existential datatypes for holding evidence of constraints on types of kind * and * -> *;
+    .
+        * Type classes for existential datatypes holding evidence of constraints on types of kind * and * -> *;
+    .
+        * Canonical, completely useless existential datatypes holding evidence of no constraint on types of kind * and * -> *;
+    .
         * Assorted type class instances for the above;
+    .
         * A type-level combinator for combining constraint constructors.
     .
-    Maybe some of these should be split off into separate packages: e-mail me if you would like that.
+    Maybe some of these should be split off into separate packages. E-mail me if you would like that.
     .
     This package requires:
+    .
         * GHC 7.4 or more.
 
 source-repository head
@@ -34,14 +39,14 @@ library
         Haskell2010
 
     other-extensions:
-        GADTs,
-        PolyKinds,
-        Rank2Types,
-        TypeFamilies,
-        TypeOperators,
-        ConstraintKinds,
-        FlexibleInstances,
-        UndecidableInstances,
+        GADTs
+        PolyKinds
+        Rank2Types
+        TypeFamilies
+        TypeOperators
+        ConstraintKinds
+        FlexibleInstances
+        UndecidableInstances
         MultiParamTypeClasses
 
     exposed-modules:
@@ -54,6 +59,7 @@ library
         Data.Exists.Internal
 
     build-depends:
+        ghc-prim,
         base >= 4.4 && < 5
 
     ghc-options:

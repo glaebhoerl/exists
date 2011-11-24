@@ -1,6 +1,7 @@
 {-# LANGUAGE TypeFamilies, ConstraintKinds, FlexibleInstances #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module Data.Exists (module Data.Exists.Internal, module Data.Exists) where
+module Data.Exists (module Data.Exists.Internal) where
 
 import Control.Constraint.Combine
 import Data.Anything
@@ -10,13 +11,11 @@ import Data.Exists.Internal
 import Control.Exception
 import Data.Dynamic
 import Data.Foldable
-import Data.Maybe (fromJust)
 import Data.Traversable as T
-import Data.Typeable
 import GHC.Prim (Any)
 import Unsafe.Coerce
 
--- | type 'ConstraintOf' 'Any' = 'Empty'
+-- | 'ConstraintOf' 'Any' = 'Empty'
 instance Existential Any where
     type ConstraintOf Any = Empty
     exists = unsafeCoerce
@@ -24,19 +23,19 @@ instance Existential Any where
     -- this is OK, because f by its type signature must be completely parametric
     -- with respect to a
 
--- | type 'ConstraintOf' 'Anything' = 'Empty'
+-- | 'ConstraintOf' 'Anything' = 'Empty'
 instance Existential Anything where
     type ConstraintOf Anything = Empty
     exists = Anything
-    apply f (Anything a) = Anything a
+    apply f (Anything a) = f a
 
--- | type 'ConstraintOf1' 'Anything1' = 'Empty'
+-- | 'ConstraintOf1' 'Anything1' = 'Empty'
 instance Existential1 Anything1 where
     type ConstraintOf1 Anything1 = Empty
     exists1 = Anything1
     apply1 f (Anything1 a) = f a
 
--- | type 'ConstraintOf' 'Dynamic' = 'Typeable'
+-- | 'ConstraintOf' 'Dynamic' = 'Typeable'
 instance Existential Dynamic where
     type ConstraintOf Dynamic = Typeable
     exists = toDyn
@@ -50,7 +49,7 @@ instance Existential Dynamic where
     --   be bottom, but Typeable won't allow the cast to succeed and it won't
     --   matter.
 
--- | type 'ConstraintOf' 'SomeException' = 'Exception'
+-- | 'ConstraintOf' 'SomeException' = 'Exception'
 instance Existential SomeException where
     type ConstraintOf SomeException = Exception
     exists = SomeException

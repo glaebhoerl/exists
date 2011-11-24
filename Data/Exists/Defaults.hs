@@ -1,6 +1,6 @@
 {-# LANGUAGE GADTs, TypeFamilies, Rank2Types, ConstraintKinds  #-}
 
--- Default functions which can be used as method implementations when writing type class instances for existential datatypes.
+-- | Default functions which can be used as method implementations when writing type class instances for existential datatypes.
 module Data.Exists.Defaults where
 
 import Data.Exists.Internal

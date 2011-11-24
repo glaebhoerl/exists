@@ -12,7 +12,7 @@ data Anything where
 -- | A datatype containing any * -> * type constructor applied to 'a'. You can't do anything with it.
 data Anything1 a where
      Anything1 :: f a -> Anything1 a
-     deriving Typeable1
+     deriving Typeable
 
 instance Show Anything where
     show = const "Anything"

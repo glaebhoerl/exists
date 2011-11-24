@@ -6,25 +6,28 @@ module Data.Exists.Internal (Constraint, module Data.Exists.Internal) where
 import GHC.Prim (Constraint)
 
 -- | A datatype which holds a value of a type satisfying the constraint 'c', hiding the type, and evidence for the constraint, so that it can be taken advantage of by pattern matching later.
+--
 --   An example:
+--
 --   > foo :: Exists Show
 --   > foo = Exists (Just 9 :: Maybe Int)
+--   >
 --   > printExists :: Exists Show -> IO ()
 --   > printExists (Exists e) = print e
+--   >
 --   > main = printExists foo -- prints "Just 9"
 data Exists c where
      Exists :: c a => a -> Exists c
 
 -- | A type class for existential datatypes.
 class Existential e where
-    -- | The constraint held by 'e'.
     type ConstraintOf e :: * -> Constraint
     -- | Construct 'e' from a value of a type satisfying the constraint.
     exists :: (c ~ ConstraintOf e, c a) => a -> e
     -- | Apply a function requiring the constraint to the held value.
     apply  :: c ~ ConstraintOf e => (forall a. c a => a -> r) -> e -> r
 
--- | type 'ConstraintOf' ('Exists' c) = c
+-- | 'ConstraintOf' ('Exists' c) = c
 instance Existential (Exists c) where
     type ConstraintOf (Exists c) = c
     exists = Exists
@@ -38,16 +41,15 @@ translate = apply exists
 data Exists1 c a where
      Exists1 :: c f => f a -> Exists1 c a
 
--- | A * -> * kinded version of 'Existential'.
+-- | A version of 'Existential' for * -> *.
 class Existential1 e where
-    -- | The constraint held be 'e'.
     type ConstraintOf1 e :: (* -> *) -> Constraint
-    -- | Construct 'e' from a value of a type constructor satisfying the constraint applied to a type.
+    -- | Construct 'e' from a value of a type constructor applied to a type, where the type constructor satisfies the constraint.
     exists1 :: (c ~ ConstraintOf1 e, c f) => f a -> e a
     -- | Apply a function requiring the constraint to the held value.
     apply1  :: c ~ ConstraintOf1 e => (forall f. c f => f a -> r) -> e a -> r
 
--- | type 'ConstraintOf1' ('Exists1' c) = c
+-- | 'ConstraintOf1' ('Exists1' c) = c
 instance Existential1 (Exists1 c) where
     type ConstraintOf1 (Exists1 c) = c
     exists1 = Exists1
