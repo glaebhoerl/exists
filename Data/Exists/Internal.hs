@@ -22,9 +22,9 @@ data Exists c where
 class Existential e where
     type ConstraintOf e :: * -> Constraint
     -- | Construct 'e' from a value of a type satisfying the constraint.
-    exists :: (c ~ ConstraintOf e, c a) => a -> e
+    exists :: ConstraintOf e a => a -> e
     -- | Apply a function requiring the constraint to the held value.
-    apply  :: c ~ ConstraintOf e => (forall a. c a => a -> r) -> e -> r
+    apply  :: (forall a. ConstraintOf e a => a -> r) -> e -> r
 
 -- | 'ConstraintOf' ('Exists' c) = c
 instance Existential (Exists c) where
@@ -44,9 +44,9 @@ data Exists1 c a where
 class Existential1 e where
     type ConstraintOf1 e :: (* -> *) -> Constraint
     -- | Construct 'e' from a value of a type constructor applied to a type, where the type constructor satisfies the constraint.
-    exists1 :: (c ~ ConstraintOf1 e, c f) => f a -> e a
+    exists1 :: ConstraintOf1 e f => f a -> e a
     -- | Apply a function requiring the constraint to the held value.
-    apply1  :: c ~ ConstraintOf1 e => (forall f. c f => f a -> r) -> e a -> r
+    apply1  :: (forall f. ConstraintOf1 e f => f a -> r) -> e a -> r
 
 -- | 'ConstraintOf1' ('Exists1' c) = c
 instance Existential1 (Exists1 c) where

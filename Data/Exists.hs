@@ -1,7 +1,6 @@
 {-# LANGUAGE TypeFamilies, ConstraintKinds, FlexibleInstances #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
--- | Canonical existential datatypes and type classes for existential datatypes.
 module Data.Exists (module Data.Exists.Internal) where
 
 import Control.Constraint.Combine
