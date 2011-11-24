@@ -1,6 +1,5 @@
 {-# LANGUAGE GADTs, TypeFamilies, Rank2Types, ConstraintKinds #-}
 
--- | Canonical existential datatypes and type classes for existential datatypes.
 module Data.Exists.Internal (Constraint, module Data.Exists.Internal) where
 
 import GHC.Prim (Constraint)
