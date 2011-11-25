@@ -1,5 +1,6 @@
 {-# LANGUAGE GADTs, DeriveDataTypeable #-}
 
+-- | Useless existential datatypes holding evidence of no constraint.
 module Data.Anything where
 
 import Data.Typeable
@@ -18,6 +19,4 @@ instance Show Anything where
     show = const "Anything"
 
 instance Show (Anything1 a) where
-    show = const "Anything1 a"
-
-
+    show = const "Anything1"

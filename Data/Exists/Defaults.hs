@@ -6,8 +6,8 @@ module Data.Exists.Defaults where
 import Data.Exists.Internal
 
 import Control.Applicative (Applicative)
-import Control.Monad (liftM)
-import Data.Monoid (Monoid)
+import Control.Monad       (liftM)
+import Data.Monoid         (Monoid)
 import Data.Foldable
 import Data.Traversable
 

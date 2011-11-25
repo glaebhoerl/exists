@@ -1,8 +1,12 @@
 {-# LANGUAGE GADTs, TypeFamilies, Rank2Types, ConstraintKinds #-}
 
-module Data.Exists.Internal (Constraint, module Data.Exists.Internal) where
+module Data.Exists.Internal (module Data.Exists.Internal,
+-- * The Constraint kind
+                             Constraint) where
 
 import GHC.Prim (Constraint)
+
+-- * For kind *
 
 -- | A datatype which holds a value of a type satisfying the constraint 'c', hiding the type, and evidence for the constraint, so that it can be taken advantage of by pattern matching later.
 --
@@ -35,6 +39,8 @@ instance Existential (Exists c) where
 -- | Translate between different existential datatypes holding evidence for the same constraint.
 translate :: (Existential e1, Existential e2, ConstraintOf e1 ~ ConstraintOf e2) => e1 -> e2
 translate = apply exists
+
+-- * For kind * -> *
 
 -- | A * -> * kinded version of 'Exists', which holds a value of a type constructor applied to a type, hiding the type constructor, and holding evidence for a constraint on the type constructor.
 data Exists1 c a where

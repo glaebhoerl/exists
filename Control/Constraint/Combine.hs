@@ -1,12 +1,16 @@
 {-# LANGUAGE PolyKinds, ConstraintKinds, TypeOperators, MultiParamTypeClasses, FlexibleInstances, UndecidableInstances #-}
+{-# OPTIONS_GHC -fno-warn-unused-imports #-}
 
 -- | This module contains a type-level combinator for combining constraint constructors.
 --
---   This is useful because you can't inherently write a 'Data.Exists.Exists' type or 'Data.Exists.Existential' instance referencing more than one.
+--   This is useful because you can't inherently write an 'Exists' type or 'Existential' instance referencing more than one.
 module Control.Constraint.Combine where
 
--- | Combine two constraint constructors of kind X -> 'Constraint', where X is any kind.
---   This is similar in spirit to
+import Data.Exists.Internal -- just for haddock
+
+-- | Combine two constraint constructors of kind &#967; -> 'Constraint', where &#967; is any kind.
+--
+--   This is the same as
 --
 --   > type (c :&: d) a = (c a, d a)
 --
