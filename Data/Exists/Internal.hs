@@ -22,7 +22,22 @@ import GHC.Prim (Constraint)
 data Exists c where
      Exists :: c a => a -> Exists c
 
--- | A type class for existential datatypes.
+-- | A type class allowing one to abstract over the existential datatype used.
+--
+--   An example:
+--
+--   > foo :: Exists Show
+--   > foo = exists (Just 9 :: Maybe Int)
+--   >
+--   > main = apply print foo -- prints "Just 9"
+--
+--   Note that had we given 'foo' the type signature
+--
+--   > foo :: (Existential e, ConstraintOf e ~ Show) => e
+--
+--   GHC would have given us an error message because the instance of 'Existential' to use is ambiguous.
+--
+--   (In other words, the @apply f . exists@ problem is analogous to the @show . read@ problem.)
 class Existential e where
     type ConstraintOf e :: * -> Constraint
     -- | Construct 'e' from a value of a type satisfying the constraint.
