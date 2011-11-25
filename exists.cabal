@@ -29,6 +29,8 @@ description:
     This package requires:
     .
         * GHC 7.4 or more.
+    .
+    The important module below is Data.Exists, the rest are just dressing.
 
 source-repository head
     type:      git
