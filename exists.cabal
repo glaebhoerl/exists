@@ -14,11 +14,11 @@ synopsis:      Existential datatypes holding evidence of constraints
 description:
     This package contains:
     .
-        * Canonical existential datatypes for holding evidence of constraints on types of kind * and * -> *;
+        * Canonical existential datatypes for holding evidence of constraints on types of kind @*@ and @* -> *@;
     .
-        * Type classes for existential datatypes holding evidence of constraints on types of kind * and * -> *;
+        * Type classes for existential datatypes holding evidence of constraints on types of kind @*@ and @* -> *@;
     .
-        * Canonical, completely useless existential datatypes holding evidence of no constraint on types of kind * and * -> *;
+        * Canonical, completely useless existential datatypes holding evidence of no constraint on types of kind @*@ and @* -> *@;
     .
         * Assorted type class instances for the above;
     .

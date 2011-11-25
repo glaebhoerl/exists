@@ -3,12 +3,12 @@
 
 -- | This module contains a type-level combinator for combining constraint constructors.
 --
---   This is useful because you can't inherently write an 'Exists' type or 'Existential' instance referencing more than one.
+--   This is useful because you can't inherently write an @'Exists'@ type or @'Existential'@ instance referencing more than one.
 module Control.Constraint.Combine where
 
 import Data.Exists.Internal -- just for haddock
 
--- | Combine two constraint constructors of kind &#967; -> 'Constraint', where &#967; is any kind.
+-- | Combine two constraint constructors of kind @&#967; -> 'Constraint'@, where @&#967;@ is any kind.
 --
 --   This is the same as
 --
@@ -25,12 +25,12 @@ class    (c a, d a) => (c :&: d) a
 instance (c a, d a) => (c :&: d) a
 infixl 7 :&:
 
--- | The same as ':&:', for those who prefer English.
+-- | The same as @':&:'@, for those who prefer English.
 type c `And` d = c :&: d
 infixl 7 `And`
 
 -- | An empty constraint, which implies nothing.
 --
---  ':&:' and 'Empty' form a type-level monoid with 'Empty' as the identity element.
+--  @':&:'@ and @'Empty'@ form a type-level monoid with @'Empty'@ as the identity element.
 class    Empty a
 instance Empty a

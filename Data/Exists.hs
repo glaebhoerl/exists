@@ -16,7 +16,7 @@ import Data.Traversable     as T
 import GHC.Prim (Any)
 import Unsafe.Coerce
 
--- | 'ConstraintOf' 'Any' = 'Empty'
+-- | @'ConstraintOf' 'Any' = 'Empty'@
 instance Existential Any where
     type ConstraintOf Any = Empty
     exists = unsafeCoerce
@@ -24,26 +24,26 @@ instance Existential Any where
     -- this is OK, because f by its type signature must be completely parametric
     -- with respect to a
 
--- | 'ConstraintOf1' 'Any' = 'Empty'
+-- | @'ConstraintOf1' 'Any' = 'Empty'@
 instance Existential1 Any where
     type ConstraintOf1 Any = Empty
     exists1 = unsafeCoerce
     apply1 f a = f a
     -- likewise
 
--- | 'ConstraintOf' 'Anything' = 'Empty'
+-- | @'ConstraintOf' 'Anything' = 'Empty'@
 instance Existential Anything where
     type ConstraintOf Anything = Empty
     exists = Anything
     apply f (Anything a) = f a
 
--- | 'ConstraintOf1' 'Anything1' = 'Empty'
+-- | @'ConstraintOf1' 'Anything1' = 'Empty'@
 instance Existential1 Anything1 where
     type ConstraintOf1 Anything1 = Empty
     exists1 = Anything1
     apply1 f (Anything1 a) = f a
 
--- | 'ConstraintOf' 'Dynamic' = 'Typeable'
+-- | @'ConstraintOf' 'Dynamic' = 'Typeable'@
 instance Existential Dynamic where
     type ConstraintOf Dynamic = Typeable
     exists = toDyn
@@ -57,7 +57,7 @@ instance Existential Dynamic where
     --   be bottom, but Typeable won't allow the cast to succeed and it won't
     --   matter.
 
--- | 'ConstraintOf' 'SomeException' = 'Exception'
+-- | @'ConstraintOf' 'SomeException' = 'Exception'@
 instance Existential SomeException where
     type ConstraintOf SomeException = Exception
     exists = SomeException
