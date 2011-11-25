@@ -24,6 +24,13 @@ instance Existential Any where
     -- this is OK, because f by its type signature must be completely parametric
     -- with respect to a
 
+-- | 'ConstraintOf1' 'Any' = 'Empty'
+instance Existential1 Any where
+    type ConstraintOf1 Any = Empty
+    exists1 = unsafeCoerce
+    apply1 f a = f a
+    -- likewise
+
 -- | 'ConstraintOf' 'Anything' = 'Empty'
 instance Existential Anything where
     type ConstraintOf Anything = Empty
