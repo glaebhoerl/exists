@@ -26,7 +26,15 @@ data Exists c where
 --
 --   An example:
 --
---   > foo :: Exists Show
+--   > data EShow where
+--   >      EShow :: Show a => a -> EShow
+--   >
+--   > instance Existential EShow where
+--   >     type ConstraintOf EShow = Show
+--   >     exists = EShow
+--   >     apply f (EShow a) = f a
+--   >
+--   > foo :: EShow
 --   > foo = exists (Just 9 :: Maybe Int)
 --   >
 --   > main = apply print foo -- prints "Just 9"
@@ -35,9 +43,7 @@ data Exists c where
 --
 --   > foo :: (Existential e, ConstraintOf e ~ Show) => e
 --
---   GHC would have given us an error message because the instance of @'Existential'@ to use is ambiguous.
---
---   (In other words, the @'apply' f '.' 'exists'@ problem is analogous to the @'show' '.' 'read'@ problem.)
+--   GHC would have given us an error message because the instance of @'Existential'@ to use would have been ambiguous (the @'apply' f '.' 'exists'@ problem is analogous to the @'show' '.' 'read'@ problem).
 class Existential e where
     type ConstraintOf e :: * -> Constraint
     -- | Construct 'e' from a value of a type satisfying the constraint.
