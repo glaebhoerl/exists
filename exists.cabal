@@ -62,7 +62,11 @@ library
 
     build-depends:
         ghc-prim,
-        base >= 4.4 && < 5
+        base >= 4.4 && < 5,
+        contravariant,
+        comonad,
+        comonads-fd,
+        pointed
 
     ghc-options:
         -Wall
