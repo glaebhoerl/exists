@@ -1,20 +1,38 @@
-{-# LANGUAGE TypeFamilies, ConstraintKinds, FlexibleInstances #-}
+{-# LANGUAGE TypeFamilies, ConstraintKinds, FlexibleInstances, MultiParamTypeClasses #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- | Canonical existential datatypes holding evidence of constraints, and type classes for existential datatypes.
 module Data.Exists (module Data.Exists.Internal) where
 
-import Control.Constraint.Combine
-import Data.Anything
-import Data.Exists.Defaults as D
 import Data.Exists.Internal
+import Data.Exists.Defaults
 
-import Control.Exception
-import Data.Dynamic
-import Data.Foldable
-import Data.Traversable     as T
-import GHC.Prim (Any)
-import Unsafe.Coerce
+import Prelude                         ((.), error)
+import Unsafe.Coerce                   (unsafeCoerce)
+import qualified Data.Traversable as T (foldMapDefault, fmapDefault)
+import Data.Dynamic                    (toDyn, fromDyn)
+import Control.Constraint.Combine      (Empty)
+import Data.Typeable                   (Typeable)
+import Control.Exception               (Exception)
+
+import Data.Dynamic                    (Dynamic)
+import GHC.Prim                        (Any)
+import Data.Anything                   (Anything      (..),
+                                        Anything1     (..))
+import Control.Exception               (SomeException (..))
+
+import Prelude                         (Show          (..),
+                                        Functor       (..))
+import Data.Foldable                   (Foldable      (..))
+import Data.Traversable                (Traversable   (..))
+import Data.Functor.Contravariant      (Contravariant (..))
+import Data.Functor.Extend             (Extend        (..))
+import Control.Comonad                 (Comonad       (..))
+import Control.Comonad.Env.Class       (ComonadEnv    (..))
+import Control.Comonad.Traced.Class    (ComonadTraced (..))
+import Control.Comonad.Store.Class     (ComonadStore  (..))
+import Data.Copointed                  (Copointed     (..))
+
 
 -- | @'ConstraintOf' 'Any' = 'Empty'@
 instance Existential Any where
@@ -77,29 +95,90 @@ instance Existential SomeException where
 -- (Exists Exception), we'd still be screwed from the other direction, but we
 -- can't do that because Typeable isn't available for Constraints.
 
-instance        Show (Exists  Show)        where
+instance            Show (Exists  Show)              where
     show      = showDefault
     showsPrec = showsPrecDefault
 
-instance     Functor (Exists1 Functor)     where
-    fmap      = D.fmapDefault
+instance         Functor (Exists1 Functor)           where
+    fmap      = fmapDefault
 
-instance    Foldable (Exists1 Foldable)    where
+instance        Foldable (Exists1 Foldable)          where
     fold      = foldDefault
-    foldMap   = D.foldMapDefault
+    foldMap   = foldMapDefault
     foldl     = foldlDefault
     foldr     = foldrDefault
     foldl1    = foldl1Default
     foldr1    = foldr1Default
 
-instance     Functor (Exists1 Traversable) where
+instance         Functor (Exists1 Traversable)       where
     fmap      = T.fmapDefault
 
-instance    Foldable (Exists1 Traversable) where
+instance        Foldable (Exists1 Traversable)       where
     foldMap   = T.foldMapDefault
 
-instance Traversable (Exists1 Traversable) where
+instance     Traversable (Exists1 Traversable)       where
     traverse  = traverseDefault
     sequenceA = sequenceADefault
     mapM      = mapMDefault
     sequence  = sequenceDefault
+
+instance   Contravariant (Exists1 Contravariant)     where
+    contramap = contramapDefault
+
+instance         Functor (Exists1 Extend)            where
+    fmap f    = apply1 (exists1 . fmap f)
+
+instance          Extend (Exists1 Extend)            where
+    duplicate = duplicateDefault
+
+instance         Functor (Exists1 Comonad)           where
+    fmap f    = apply1 (exists1 . fmap f)
+
+instance          Extend (Exists1 Comonad)           where
+    duplicate = apply1 (exists1 . fmap exists1 . duplicate)
+
+instance         Comonad (Exists1 Comonad)           where
+    extract   = extractDefault
+
+instance         Functor (Exists1 (ComonadEnv e))    where
+    fmap f    = apply1 (exists1 . fmap f)
+
+instance          Extend (Exists1 (ComonadEnv e))    where
+    duplicate = apply1 (exists1 . fmap exists1 . duplicate)
+
+instance         Comonad (Exists1 (ComonadEnv e))    where
+    extract   = apply1 extract
+
+instance    ComonadEnv e (Exists1 (ComonadEnv e))    where
+    ask       = askDefault
+
+instance         Functor (Exists1 (ComonadTraced m)) where
+    fmap f    = apply1 (exists1 . fmap f)
+
+instance          Extend (Exists1 (ComonadTraced m)) where
+    duplicate = apply1 (exists1 . fmap exists1 . duplicate)
+
+instance         Comonad (Exists1 (ComonadTraced m)) where
+    extract   = apply1 extract
+
+instance ComonadTraced m (Exists1 (ComonadTraced m)) where
+    trace     = traceDefault
+
+instance         Functor (Exists1 (ComonadStore s))  where
+    fmap f    = apply1 (exists1 . fmap f)
+
+instance          Extend (Exists1 (ComonadStore s))  where
+    duplicate = apply1 (exists1 . fmap exists1 . duplicate)
+
+instance         Comonad (Exists1 (ComonadStore s))  where
+    extract   = apply1 extract
+
+instance  ComonadStore s (Exists1 (ComonadStore s))  where
+    pos       = posDefault
+    peek      = peekDefault
+    peeks     = peeksDefault
+    seek      = seekDefault
+    seeks     = seeksDefault
+
+instance       Copointed (Exists1 Copointed)         where
+    copoint   = copointDefault
