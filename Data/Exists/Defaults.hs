@@ -123,6 +123,7 @@ copointDefault       = apply1 copoint
 {-# INLINE sequenceDefault  #-}
 {-# INLINE contramapDefault #-}
 {-# INLINE duplicateDefault #-}
+{-  INLINE extendDefault     -}
 {-# INLINE extractDefault   #-}
 {-# INLINE askDefault       #-}
 {-# INLINE traceDefault     #-}
