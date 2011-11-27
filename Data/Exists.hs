@@ -11,6 +11,7 @@ import Prelude                         ((.), error)
 import Unsafe.Coerce                   (unsafeCoerce)
 import qualified Data.Traversable as T (foldMapDefault, fmapDefault)
 import Data.Dynamic                    (toDyn, fromDyn)
+import Control.Comonad                 (liftW)
 import Control.Constraint.Combine      (Empty)
 import Data.Typeable                   (Typeable)
 import Control.Exception               (Exception)
@@ -132,7 +133,7 @@ instance          Extend (Exists1 Extend)            where
     duplicate = duplicateDefault
 
 instance         Functor (Exists1 Comonad)           where
-    fmap f    = apply1 (exists1 . fmap f)
+    fmap      = liftW
 
 instance          Extend (Exists1 Comonad)           where
     duplicate = apply1 (exists1 . fmap exists1 . duplicate)
@@ -141,7 +142,7 @@ instance         Comonad (Exists1 Comonad)           where
     extract   = extractDefault
 
 instance         Functor (Exists1 (ComonadEnv e))    where
-    fmap f    = apply1 (exists1 . fmap f)
+    fmap      = liftW
 
 instance          Extend (Exists1 (ComonadEnv e))    where
     duplicate = apply1 (exists1 . fmap exists1 . duplicate)
@@ -153,7 +154,7 @@ instance    ComonadEnv e (Exists1 (ComonadEnv e))    where
     ask       = askDefault
 
 instance         Functor (Exists1 (ComonadTraced m)) where
-    fmap f    = apply1 (exists1 . fmap f)
+    fmap      = liftW
 
 instance          Extend (Exists1 (ComonadTraced m)) where
     duplicate = apply1 (exists1 . fmap exists1 . duplicate)
@@ -165,7 +166,7 @@ instance ComonadTraced m (Exists1 (ComonadTraced m)) where
     trace     = traceDefault
 
 instance         Functor (Exists1 (ComonadStore s))  where
-    fmap f    = apply1 (exists1 . fmap f)
+    fmap      = liftW
 
 instance          Extend (Exists1 (ComonadStore s))  where
     duplicate = apply1 (exists1 . fmap exists1 . duplicate)
