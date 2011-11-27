@@ -1,4 +1,4 @@
-{-# LANGUAGE GADTs, TypeFamilies, Rank2Types, ConstraintKinds #-}
+{-# LANGUAGE GADTs, TypeFamilies, Rank2Types, ConstraintKinds, MultiParamTypeClasses, FlexibleInstances, UndecidableInstances #-}
 
 module Data.Exists.Internal (module Data.Exists.Internal,
 -- * The @Constraint@ kind
@@ -57,8 +57,18 @@ instance Existential (Exists c) where
     exists = Exists
     apply f (Exists a) = f a
 
+-- | A class alias for convenience.
+--
+--   > foo :: ExistentialWith Show e => e -> IO ()
+--
+--   is equivalent to
+--
+--   > foo :: (Existential e, ConstraintOf e ~ Show) => e -> IO ()
+class    (Existential e, c ~ ConstraintOf e) => ExistentialWith c e
+instance (Existential e, c ~ ConstraintOf e) => ExistentialWith c e
+
 -- | Translate between different existential datatypes holding evidence for the same constraint.
-translate :: (Existential e1, Existential e2, ConstraintOf e1 ~ ConstraintOf e2) => e1 -> e2
+translate :: (ExistentialWith c e1, ExistentialWith c e2) => e1 -> e2
 translate = apply exists
 
 -- * For kind @* -> *@
@@ -81,6 +91,10 @@ instance Existential1 (Exists1 c) where
     exists1 = Exists1
     apply1 f (Exists1 a) = f a
 
+-- | A class alias for convenience. The equivalent of 'ExistentialWith' for @* -> *@.
+class    (Existential1 e, c ~ ConstraintOf1 e) => ExistentialWith1 c e
+instance (Existential1 e, c ~ ConstraintOf1 e) => ExistentialWith1 c e
+
 -- | Translate between different existential datatypes holding evidence for the same constraint on a @* -> *@ type constructor.
-translate1 :: (Existential1 e1, Existential1 e2, ConstraintOf1 e1 ~ ConstraintOf1 e2) => e1 a -> e2 a
+translate1 :: (ExistentialWith1 c e1, ExistentialWith1 c e2) => e1 a -> e2 a
 translate1 = apply1 exists1
