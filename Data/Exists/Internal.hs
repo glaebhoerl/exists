@@ -4,13 +4,13 @@ module Data.Exists.Internal (module Data.Exists.Internal,
 -- * The @Constraint@ kind
                              Constraint) where
 
-import GHC.Prim (Constraint)
+import GHC.Exts (Constraint)
 
 -- * For kind @*@
 
--- | A datatype which holds a value of a type satisfying the constraint 'c', hiding the type, and evidence for the constraint, so that it can be taken advantage of by pattern matching later.
+-- | A datatype which holds a value of a type satisfying the constraint 'c', hiding the type, and evidence for the constraint, so that it can be retrieved by pattern matching later.
 --
---   An example:
+--   Example:
 --
 --   > foo :: Exists Show
 --   > foo = Exists (Just 9 :: Maybe Int)
@@ -22,9 +22,9 @@ import GHC.Prim (Constraint)
 data Exists c where
      Exists :: c a => a -> Exists c
 
--- | A type class allowing one to abstract over the existential datatype used.
+-- | A type class to abstract over existential datatypes.
 --
---   An example:
+--   Example:
 --
 --   > data EShow where
 --   >      EShow :: Show a => a -> EShow
@@ -43,7 +43,7 @@ data Exists c where
 --
 --   > foo :: (Existential e, ConstraintOf e ~ Show) => e
 --
---   GHC would have given us an error message because the instance of @'Existential'@ to use would have been ambiguous (the @'apply' f '.' 'exists'@ problem is analogous to the @'show' '.' 'read'@ problem).
+--   GHC would have output an error message, because the instance of @'Existential'@ to use would have been ambiguous. (The @'apply' f '.' 'exists'@ problem is the same as the @'show' '.' 'read'@ problem.)
 class Existential e where
     type ConstraintOf e :: * -> Constraint
     -- | Construct 'e' from a value of a type satisfying the constraint.
@@ -57,7 +57,7 @@ instance Existential (Exists c) where
     exists = Exists
     apply f (Exists a) = f a
 
--- | A class alias for convenience.
+-- | An alias for convenience.
 --
 --   > foo :: ExistentialWith Show e => e -> IO ()
 --
@@ -73,14 +73,14 @@ translate = apply exists
 
 -- * For kind @* -> *@
 
--- | A @* -> *@ kinded version of @'Exists'@, which holds a value of a type constructor applied to a type, hiding the type constructor, and holding evidence for a constraint on the type constructor.
+-- | A @* -> *@ kinded version of @'Exists'@ which holds a value of a type constructor applied to a type, hiding the type constructor, and evidence for a constraint on the type constructor.
 data Exists1 c a where
      Exists1 :: c f => f a -> Exists1 c a
 
--- | A version of @'Existential'@ for @* -> *@.
+-- | A version of @'Existential'@ for kind @* -> *@.
 class Existential1 e where
     type ConstraintOf1 e :: (* -> *) -> Constraint
-    -- | Construct 'e' from a value of a type constructor applied to a type, where the type constructor satisfies the constraint.
+    -- | Construct 'e' from a value of a type constructor applied to a type where the type constructor satisfies the constraint.
     exists1 :: (ConstraintOf1 e) f => f a -> e a
     -- | Apply a function requiring the constraint to the held value.
     apply1  :: (forall f. (ConstraintOf1 e) f => f a -> r) -> e a -> r
@@ -91,10 +91,10 @@ instance Existential1 (Exists1 c) where
     exists1 = Exists1
     apply1 f (Exists1 a) = f a
 
--- | A class alias for convenience. The equivalent of 'ExistentialWith' for @* -> *@.
+-- | An alias for convenience. A version of 'ExistentialWith' for kind @* -> *@.
 class    (Existential1 e, c ~ ConstraintOf1 e) => ExistentialWith1 c e
 instance (Existential1 e, c ~ ConstraintOf1 e) => ExistentialWith1 c e
 
--- | Translate between different existential datatypes holding evidence for the same constraint on a @* -> *@ type constructor.
+-- | Translate between different existential datatypes holding evidence for the same constraint on a @* -> *@ kinded type constructor.
 translate1 :: (ExistentialWith1 c e1, ExistentialWith1 c e2) => e1 a -> e2 a
 translate1 = apply1 exists1

@@ -1,7 +1,7 @@
 {-# LANGUAGE TypeFamilies, ConstraintKinds, FlexibleInstances, MultiParamTypeClasses #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
--- | Canonical existential datatypes holding evidence of constraints, and type classes for existential datatypes.
+-- | Existential datatypes holding evidence of constraints and type classes for existential datatypes.
 module Data.Exists (module Data.Exists.Internal) where
 
 import Data.Exists.Internal
@@ -17,7 +17,7 @@ import Data.Typeable                   (Typeable)
 import Control.Exception               (Exception)
 
 import Data.Dynamic                    (Dynamic)
-import GHC.Prim                        (Any)
+import GHC.Exts                        (Any)
 import Data.Anything                   (Anything      (..),
                                         Anything1     (..))
 import Control.Exception               (SomeException (..))
@@ -67,8 +67,8 @@ instance Existential Dynamic where
     type ConstraintOf Dynamic = Typeable
     exists = toDyn
     apply f d = f (fromDyn (error "this can't be happening!") d)
-    -- if I'm thinking straight, nothing bad can result from this:
-    -- - the only things f is allowed use are what Typeable provides;
+    -- if I'm thinking correctly, nothing bad can result from this, because:
+    -- - f can only use what Typeable provides;
     -- - typeOf is required to work on bottom values;
     -- - if f tries to cast its argument to the type which was in the Dynamic,
     --   the argument will be the value from the Dynamic and won't be bottom;

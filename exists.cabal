@@ -14,23 +14,19 @@ synopsis:      Existential datatypes holding evidence of constraints
 description:
     This package contains:
     .
-        * Canonical existential datatypes for holding evidence of constraints on types of kind @*@ and @* -> *@;
+        * Existential datatypes for holding evidence of constraints on types of kind @*@ and @* -> *@;
     .
         * Type classes for existential datatypes holding evidence of constraints on types of kind @*@ and @* -> *@;
     .
-        * Canonical, completely useless existential datatypes holding evidence of no constraint on types of kind @*@ and @* -> *@;
+        * Completely useless existential datatypes holding evidence of no constraint on types of kind @*@ and @* -> *@;
     .
         * Assorted type class instances for the above;
     .
         * A type-level combinator for combining constraint constructors.
     .
-    Maybe some of these should be split off into separate packages. E-mail me if you would like that.
+    Maybe some of these should be split off into separate packages.
     .
-    This package requires:
-    .
-        * GHC 7.4 or more.
-    .
-    The important module is "Data.Exists", the rest are just dressing.
+    "Data.Exists" is the important one, the rest are peripheral.
 
 source-repository head
     type:      git
@@ -61,12 +57,11 @@ library
         Data.Exists.Internal
 
     build-depends:
-        ghc-prim,
-        base >= 4.4 && < 5,
-        contravariant,
-        comonad,
-        comonads-fd,
-        pointed
+        base          >= 4.5 && < 5,
+        contravariant == 0.1.*,
+        comonad       == 1.1.*,
+        comonads-fd   == 2.0.*,
+        pointed       == 2.0.*
 
     ghc-options:
         -Wall
