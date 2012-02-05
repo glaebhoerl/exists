@@ -24,7 +24,7 @@ description:
     .
         * A type-level combinator for combining constraint constructors.
     .
-    Maybe some of these should be split off into separate packages.
+    Some of these should maybe be split off into separate packages.
     .
     "Data.Exists" is the important module, the rest are peripheral.
 
