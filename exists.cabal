@@ -3,7 +3,7 @@ category:      Constraints
 version:       0.1
 author:        Gábor Lehel
 maintainer:    Gábor Lehel <illissius@gmail.com>
-homepage:      http://github.com/glehel/exists/
+homepage:      http://github.com/glehel/exists
 copyright:     Copyright (C) 2011 Gábor Lehel
 license:       BSD3
 license-file:  LICENSE
@@ -26,7 +26,7 @@ description:
     .
     Maybe some of these should be split off into separate packages.
     .
-    "Data.Exists" is the important one, the rest are peripheral.
+    "Data.Exists" is the important module, the rest are peripheral.
 
 source-repository head
     type:      git
@@ -38,7 +38,7 @@ library
 
     other-extensions:
         GADTs
-        PolyKinds
+--        PolyKinds
         Rank2Types
         TypeFamilies
         TypeOperators
