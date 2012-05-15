@@ -43,7 +43,7 @@ data Exists c where
 --
 --   > foo :: (Existential e, ConstraintOf e ~ Show) => e
 --
---   GHC would have output an error message, because the instance of @'Existential'@ to use would have been ambiguous. (The @'apply' f '.' 'exists'@ problem is the same as the @'show' '.' 'read'@ problem.)
+--   GHC would have given us an error message, because the instance of @'Existential'@ to use would have been ambiguous. (The @'apply' f . 'exists'@ problem is the same as the @'show' . 'read'@ problem.)
 class Existential e where
     type ConstraintOf e :: * -> Constraint
     -- | Construct 'e' from a value of a type satisfying the constraint.
@@ -80,7 +80,7 @@ data Exists1 c a where
 -- | A version of @'Existential'@ for kind @* -> *@.
 class Existential1 e where
     type ConstraintOf1 e :: (* -> *) -> Constraint
-    -- | Construct 'e' from a value of a type constructor applied to a type where the type constructor satisfies the constraint.
+    -- | Construct 'e' from a value of a type constructor applied to a type, where the type constructor satisfies the constraint.
     exists1 :: (ConstraintOf1 e) f => f a -> e a
     -- | Apply a function requiring the constraint to the held value.
     apply1  :: (forall f. (ConstraintOf1 e) f => f a -> r) -> e a -> r

@@ -1,10 +1,10 @@
 name:          exists
 category:      Constraints
-version:       0.1
+version:       0.2
 author:        Gábor Lehel
 maintainer:    Gábor Lehel <illissius@gmail.com>
 homepage:      http://github.com/glehel/exists
-copyright:     Copyright (C) 2011 Gábor Lehel
+copyright:     Copyright (C) 2012 Gábor Lehel
 license:       BSD3
 license-file:  LICENSE
 stability:     experimental
@@ -24,9 +24,17 @@ description:
     .
         * A type-level combinator for combining constraint constructors.
     .
-    Some of these should maybe be split off into separate packages.
+    (Some of these might be better off as separate packages.)
     .
-    "Data.Exists" is the important module, the rest are peripheral.
+    "Data.Exists" has most of the important things.
+    .
+    Minimum GHC: 7.4
+    .
+    Changes in 0.2:
+    .
+        * Removed @Comonad@-related things (they were probably useless anyways)
+    .
+        * Added @Data.Exists.CPS@
 
 source-repository head
     type:      git
@@ -50,6 +58,7 @@ library
     exposed-modules:
         Data.Anything
         Data.Exists
+        Data.Exists.CPS
         Data.Exists.Defaults
         Control.Constraint.Combine
 
@@ -58,10 +67,10 @@ library
 
     build-depends:
         base          >= 4.5 && < 5,
-        contravariant == 0.1.*,
-        comonad       == 1.1.*,
-        comonads-fd   == 2.0.*,
-        pointed       == 2.0.*
+        contravariant >= 0.1 && < 0.3
+--        comonad       == 1.1.*,
+--        comonads-fd   == 2.0.*,
+--        pointed       == 2.0.*
 
     ghc-options:
         -Wall

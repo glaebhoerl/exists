@@ -1,7 +1,7 @@
 {-# LANGUAGE TypeFamilies, ConstraintKinds, FlexibleInstances, MultiParamTypeClasses #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
--- | Existential datatypes holding evidence of constraints and type classes for existential datatypes.
+-- | Existential datatypes holding evidence of constraints, and type classes for existential datatypes.
 module Data.Exists (module Data.Exists.Internal) where
 
 import Data.Exists.Internal
@@ -11,7 +11,7 @@ import Prelude                         ((.), error)
 import Unsafe.Coerce                   (unsafeCoerce)
 import qualified Data.Traversable as T (foldMapDefault, fmapDefault)
 import Data.Dynamic                    (toDyn, fromDyn)
-import Control.Comonad                 (liftW)
+--import Control.Comonad                 (liftW)
 import Control.Constraint.Combine      (Empty)
 import Data.Typeable                   (Typeable)
 import Control.Exception               (Exception)
@@ -27,13 +27,14 @@ import Prelude                         (Show          (..),
 import Data.Foldable                   (Foldable      (..))
 import Data.Traversable                (Traversable   (..))
 import Data.Functor.Contravariant      (Contravariant (..))
+{-
 import Data.Functor.Extend             (Extend        (..))
 import Control.Comonad                 (Comonad       (..))
 import Control.Comonad.Env.Class       (ComonadEnv    (..))
 import Control.Comonad.Traced.Class    (ComonadTraced (..))
 import Control.Comonad.Store.Class     (ComonadStore  (..))
 import Data.Copointed                  (Copointed     (..))
-
+-}
 
 -- | @'ConstraintOf' 'Any' = 'Empty'@
 instance Existential Any where
@@ -123,9 +124,11 @@ instance     Traversable (Exists1 Traversable)       where
     mapM      = mapMDefault
     sequence  = sequenceDefault
 
+
 instance   Contravariant (Exists1 Contravariant)     where
     contramap = contramapDefault
 
+{-
 instance         Functor (Exists1 Extend)            where
     fmap f    = apply1 (exists1 . fmap f)
 
@@ -183,3 +186,4 @@ instance  ComonadStore s (Exists1 (ComonadStore s))  where
 
 instance       Copointed (Exists1 Copointed)         where
     copoint   = copointDefault
+-}

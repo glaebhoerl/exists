@@ -29,7 +29,7 @@ infixl 7 :&:
 type c `And` d = c :&: d
 infixl 7 `And`
 
--- | An empty constraint which implies nothing.
+-- | An empty constraint, which implies nothing.
 --
 --  @':&:'@ and @'Empty'@ form a type-level monoid with @'Empty'@ as the identity element.
 class    Empty a

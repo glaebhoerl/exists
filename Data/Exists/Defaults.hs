@@ -15,12 +15,14 @@ import Prelude                        (Show          (..),
 import Data.Foldable                  (Foldable      (..))
 import Data.Traversable               (Traversable   (..))
 import Data.Functor.Contravariant     (Contravariant (..))
+{-
 import Data.Functor.Extend            (Extend        (..))
 import Control.Comonad                (Comonad       (..))
 import Control.Comonad.Env.Class      (ComonadEnv    (..))
 import Control.Comonad.Traced.Class   (ComonadTraced (..))
 import Control.Comonad.Store.Class    (ComonadStore  (..))
 import Data.Copointed                 (Copointed     (..))
+-}
 
 -- * Prelude.Show
 showDefault      :: ExistentialWith Show e                          => e -> String
@@ -69,6 +71,7 @@ sequenceDefault        = apply1 (liftM exists1 . sequence)
 contramapDefault :: ExistentialWith1 Contravariant e                => (a -> b) -> e b -> e a
 contramapDefault f     = apply1 (exists1 . contramap f)
 
+{-
 -- * Data.Functor.Extend.Extend
 duplicateDefault :: ExistentialWith1 Extend e                       => e a -> e (e a)
 duplicateDefault       = apply1 (exists1 . fmap exists1 . duplicate)
@@ -107,6 +110,7 @@ seeksDefault f         = apply1 (exists1 . seeks f)
 -- * Data.Copointed.Copointed
 copointDefault   :: ExistentialWith1 Copointed e                    => e a -> a
 copointDefault         = apply1 copoint
+-}
 
 {-# INLINE showDefault      #-}
 {-# INLINE showsPrecDefault #-}
@@ -122,14 +126,14 @@ copointDefault         = apply1 copoint
 {-# INLINE mapMDefault      #-}
 {-# INLINE sequenceDefault  #-}
 {-# INLINE contramapDefault #-}
-{-# INLINE duplicateDefault #-}
+{-  INLINE duplicateDefault  -}
 {-  INLINE extendDefault     -}
-{-# INLINE extractDefault   #-}
-{-# INLINE askDefault       #-}
-{-# INLINE traceDefault     #-}
-{-# INLINE posDefault       #-}
-{-# INLINE peekDefault      #-}
-{-# INLINE peeksDefault     #-}
-{-# INLINE seekDefault      #-}
-{-# INLINE seeksDefault     #-}
-{-# INLINE copointDefault   #-}
+{-  INLINE extractDefault    -}
+{-  INLINE askDefault        -}
+{-  INLINE traceDefault      -}
+{-  INLINE posDefault        -}
+{-  INLINE peekDefault       -}
+{-  INLINE peeksDefault      -}
+{-  INLINE seekDefault       -}
+{-  INLINE seeksDefault      -}
+{-  INLINE copointDefault    -}
